@@ -1,0 +1,97 @@
+/* Theme Configuration */
+/* Theme switching and customization */
+
+/* Light Theme (Default) */
+[data-theme="light"],
+:root {
+  --theme-background: var(--color-background);
+  --theme-surface: var(--color-surface);
+  --theme-text: var(--color-text-primary);
+  --theme-border: var(--color-border);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --theme-background: #111827;
+  --theme-surface: #1f2937;
+  --theme-text: #f9fafb;
+  --theme-border: #374151;
+  
+  /* Override component colors for dark mode */
+  --color-background: #111827;
+  --color-background-secondary: #1f2937;
+  --color-surface: #374151;
+  --color-border: #4b5563;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+}
+
+/* High Contrast Theme */
+[data-theme="high-contrast"] {
+  --color-background: #ffffff;
+  --color-text-primary: #000000;
+  --color-border: #000000;
+  --color-primary: #0000ff;
+  --color-success: #008000;
+  --color-error: #ff0000;
+  --color-warning: #ffa500;
+}
+
+/* VetCare Brand Theme Variations */
+[data-theme="vet-blue"] {
+  --color-primary: #1e40af;
+  --color-primary-dark: #1e3a8a;
+  --color-primary-light: #3b82f6;
+  --color-secondary: #059669;
+}
+
+[data-theme="vet-green"] {
+  --color-primary: #059669;
+  --color-primary-dark: #047857;
+  --color-primary-light: #10b981;
+  --color-secondary: #2563eb;
+}
+
+/* Clinic-specific theming support */
+.clinic-theme {
+  /* Allows for per-clinic color customization */
+  --clinic-primary: var(--color-primary);
+  --clinic-secondary: var(--color-secondary);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .page-break {
+    page-break-after: always;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}

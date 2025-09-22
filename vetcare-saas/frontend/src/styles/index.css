@@ -1,0 +1,13 @@
+/* Global Styles */
+/* Main stylesheet for the VetCare application */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Import all style modules */
+@import './variables.css';
+@import './base.css';
+@import './components.css';
+@import './utilities.css';
+@import './theme.css';
+@import './responsive.css';
