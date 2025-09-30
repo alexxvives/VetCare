@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -36,7 +36,7 @@ import {
   ExitToApp,
   LocalHospital,
 } from '@mui/icons-material';
-import { RootState, AppDispatch } from '../store/store';
+import { RootState } from '../store/store';
 
 const DRAWER_WIDTH = 280;
 
@@ -51,7 +51,7 @@ const AppLayout: React.FC = () => {
   
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>(); // TODO: Will be used for logout and clinic switching
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
@@ -61,46 +61,46 @@ const AppLayout: React.FC = () => {
   const navigation = [
     { 
       name: 'Dashboard', 
-      path: '/dashboard', 
+      path: '/app/dashboard', 
       icon: <Dashboard />, 
-      active: location.pathname === '/dashboard' 
+      active: location.pathname === '/app/dashboard' 
     },
     { 
       name: 'Appointments', 
-      path: '/appointments', 
+      path: '/app/appointments', 
       icon: <Event />, 
-      active: location.pathname.startsWith('/appointments') 
+      active: location.pathname.startsWith('/app/appointments') 
     },
     { 
       name: 'Clients', 
-      path: '/clients', 
+      path: '/app/clients', 
       icon: <People />, 
-      active: location.pathname.startsWith('/clients') 
+      active: location.pathname.startsWith('/app/clients') 
     },
     { 
       name: 'Pets', 
-      path: '/pets', 
+      path: '/app/pets', 
       icon: <Pets />, 
-      active: location.pathname.startsWith('/pets') 
+      active: location.pathname.startsWith('/app/pets') 
     },
     { 
       name: 'Medical Records', 
-      path: '/medical', 
+      path: '/app/medical', 
       icon: <MedicalServices />, 
-      active: location.pathname.startsWith('/medical') 
+      active: location.pathname.startsWith('/app/medical') 
     },
     { 
       name: 'Reports', 
-      path: '/reports', 
+      path: '/app/reports', 
       icon: <Analytics />, 
-      active: location.pathname.startsWith('/reports'),
+      active: location.pathname.startsWith('/app/reports'),
       roles: ['clinic_admin', 'veterinarian'] 
     },
     { 
       name: 'Settings', 
-      path: '/settings', 
+      path: '/app/settings', 
       icon: <Settings />, 
-      active: location.pathname.startsWith('/settings'),
+      active: location.pathname.startsWith('/app/settings'),
       roles: ['clinic_admin'] 
     },
   ];

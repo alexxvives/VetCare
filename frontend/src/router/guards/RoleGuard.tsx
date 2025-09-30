@@ -19,7 +19,7 @@ interface RoleGuardProps {
 const RoleGuard: React.FC<RoleGuardProps> = ({ 
   children, 
   allowedRoles, 
-  fallback = '/dashboard',
+  fallback = '/app/dashboard',
   showError = false 
 }) => {
   const { user } = useSelector((state: RootState) => state.auth);

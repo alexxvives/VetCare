@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { User, LoginRequest, LoginResponse, RegisterData } from '../../types/user';
 import { authService } from '../../services/authService';
-import { ApiResponse } from '../../types/common';
+// import { ApiResponse } from '../../types/common'; // TODO: Will be used for API error handling
 
 // State interface
 export interface AuthState {

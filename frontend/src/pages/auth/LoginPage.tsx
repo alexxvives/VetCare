@@ -1,122 +1,185 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+  Alert,
+  Paper,
+  InputAdornment,
+  IconButton,
+  Divider,
+  Stack,
+} from '@mui/material';
+import {
+  Email,
+  Lock,
+  Visibility,
+  VisibilityOff,
+  LocalHospital,
+} from '@mui/icons-material';
+import { RootState } from '../../store/store';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>(); // TODO: Will be used for login action
   const navigate = useNavigate();
   const location = useLocation();
   
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
   
-  // Get the page user was trying to access before login
-  const from = (location.state as any)?.from || '/dashboard';
+  const from = (location.state as any)?.from || '/app/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       // TODO: Implement login logic
-      // await dispatch(login({ email, password, remember_me: rememberMe }));
       navigate(from, { replace: true });
     } catch (error) {
-      // Error handling is done in the Redux slice
+      // Error handling
     }
   };
 
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">
-        Sign in to your account
-      </h2>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 400, width: '100%' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, color: 'white' }}>
+        <LocalHospital sx={{ fontSize: 40, mr: 2 }} />
+        <Typography variant="h4" component="h1" fontWeight="bold">
+          VetCare
+        </Typography>
+      </Box>
 
-      {error && (
-        <div className="mb-4 p-3 rounded bg-red-100 border border-red-400 text-red-700">
-          {error}
-        </div>
-      )}
+      <Paper elevation={24} sx={{ p: 4, width: '100%', background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderRadius: 3 }}>
+        <Typography variant="h5" component="h2" align="center" gutterBottom sx={{ fontWeight: 600, color: 'text.primary', mb: 3 }}>
+          Welcome Back
+        </Typography>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your email"
-          />
-        </div>
+        <Typography variant="body2" align="center" color="text.secondary" sx={{ mb: 4 }}>
+          Sign in to your veterinary practice account
+        </Typography>
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your password"
-          />
-        </div>
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        <Box component="form" onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              id="email"
+              name="email"
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              autoFocus
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email color="action" />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
             />
-            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-              Remember me
-            </label>
-          </div>
 
-          <Link
-            to="/auth/forgot-password"
-            className="text-sm text-blue-600 hover:text-blue-500"
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleTogglePassword} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+            />
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label="Remember me"
+              />
+              <Link to="/auth/forgot-password" style={{ textDecoration: 'none', color: '#1976d2', fontSize: '0.875rem' }}>
+                Forgot password?
+              </Link>
+            </Box>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              disabled={isLoading}
+              sx={{ py: 1.5, borderRadius: 2, fontWeight: 600, fontSize: '1rem', textTransform: 'none' }}
+            >
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </Button>
+          </Stack>
+
+          <Divider sx={{ my: 3 }}>
+            <Typography variant="body2" color="text.secondary">
+              New to VetCare?
+            </Typography>
+          </Divider>
+
+          <Button
+            fullWidth
+            variant="outlined"
+            size="large"
+            component={Link}
+            to="/auth/register"
+            sx={{ py: 1.5, borderRadius: 2, fontWeight: 600, fontSize: '1rem', textTransform: 'none' }}
           >
-            Forgot your password?
-          </Link>
-        </div>
+            Create Account
+          </Button>
+        </Box>
+      </Paper>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? 'Signing in...' : 'Sign in'}
-        </button>
-
-        <div className="text-center">
-          <span className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/auth/register" className="text-blue-600 hover:text-blue-500 font-medium">
-              Sign up
-            </Link>
-          </span>
-        </div>
-      </form>
-    </div>
+      <Paper sx={{ mt: 3, p: 2, width: '100%', background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', borderRadius: 2 }}>
+        <Typography variant="caption" color="white" sx={{ opacity: 0.9, textAlign: 'center', display: 'block' }}>
+          Demo: admin@vetcare.com / demo123
+        </Typography>
+      </Paper>
+    </Box>
   );
 };
 

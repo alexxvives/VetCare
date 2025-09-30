@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Route Components (will be created)
+// Route Components
+import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
@@ -27,17 +28,20 @@ import AppLayout from '../layouts/AppLayout';
 import { RootState } from '../store/store';
 
 const AppRouter: React.FC = () => {
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
     <BrowserRouter>
       <Routes>
+        {/* Landing Page - Always Public */}
+        <Route path="/" element={<LandingPage />} />
+
         {/* Public Routes - Authentication */}
         <Route
           path="/auth/*"
           element={
             isAuthenticated ? (
-              <Navigate to="/dashboard" replace />
+              <Navigate to="/app/dashboard" replace />
             ) : (
               <AuthLayout />
             )
@@ -51,7 +55,7 @@ const AppRouter: React.FC = () => {
 
         {/* Protected Routes - Main Application */}
         <Route
-          path="/*"
+          path="/app/*"
           element={
             <ProtectedRoute>
               <ClinicGuard>
@@ -100,8 +104,8 @@ const AppRouter: React.FC = () => {
           />
           
           {/* Default redirect - use index route instead of absolute path */}
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="*" element={<Navigate to="dashboard" replace />} />
         </Route>
 
         {/* Catch-all redirect */}
@@ -109,9 +113,9 @@ const AppRouter: React.FC = () => {
           path="*"
           element={
             isAuthenticated ? (
-              <Navigate to="/dashboard" replace />
+              <Navigate to="/app/dashboard" replace />
             ) : (
-              <Navigate to="/auth/login" replace />
+              <Navigate to="/" replace />
             )
           }
         />

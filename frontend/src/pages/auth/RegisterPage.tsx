@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ const RegisterPage: React.FC = () => {
     terms: false
   });
   
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>(); // TODO: Will be used for registration action
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
 
@@ -209,13 +209,21 @@ const RegisterPage: React.FC = () => {
           />
           <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
             I agree to the{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500">
+            <button 
+              type="button"
+              onClick={() => window.open('/terms', '_blank')}
+              className="text-blue-600 hover:text-blue-500 underline bg-transparent border-none p-0 font-inherit cursor-pointer"
+            >
               Terms and Conditions
-            </a>{' '}
+            </button>{' '}
             and{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500">
+            <button 
+              type="button"
+              onClick={() => window.open('/privacy', '_blank')}
+              className="text-blue-600 hover:text-blue-500 underline bg-transparent border-none p-0 font-inherit cursor-pointer"
+            >
               Privacy Policy
-            </a>
+            </button>
           </label>
         </div>
 

@@ -27,7 +27,7 @@ const ClinicGuard: React.FC<ClinicGuardProps> = ({ children }) => {
         // dispatch(switchClinic(storedClinicId));
       } else {
         // Default to the first available clinic
-        const defaultClinicId = user.clinic_access[0];
+        // const defaultClinicId = user.clinic_access[0];
         // dispatch(switchClinic(defaultClinicId));
       }
     }
