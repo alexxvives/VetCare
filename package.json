@@ -1,5 +1,65 @@
-{
-  "dependencies": {
-    "jsonwebtoken": "^9.0.2"
-  }
-}
+{{
+
+  "name": "vetcare",  "name": "vetcare",
+
+  "version": "1.0.0",  "version": "1.0.0",
+
+  "description": "Multi-tenant SaaS platform for veterinary clinics",  "description": "Multi-tenant SaaS platform for veterinary clinics",
+
+  "main": "index.js",  "main": "index.js",
+
+  "scripts": {  "scripts": {
+
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+
+    "dev:backend": "cd backend && npm run dev",    "dev:backend": "cd backend && npm run dev",
+
+    "dev:frontend": "cd frontend && npm start",    "dev:frontend": "cd frontend && npm start",
+
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+
+    "test": "cd backend && npm test && cd ../frontend && npm test",    "test": "cd backend && npm test && cd ../frontend && npm test",
+
+    "migrate": "cd backend && npx knex migrate:latest",    "migrate": "cd backend && npx knex migrate:latest",
+
+    "seed": "cd backend && npx knex seed:run",    "seed": "cd backend && npx knex seed:run",
+
+    "deploy": "npm run build && wrangler publish"    "deploy": "npm run build && wrangler publish"
+
+  },  },
+
+  "keywords": [  "keywords": [
+
+    "veterinary",    "veterinary",
+
+    "saas",    "saas",
+
+    "healthcare",    "healthcare",
+
+    "appointment-scheduling",    "appointment-scheduling",
+
+    "ehr",    "ehr",
+
+    "hipaa"    "hipaa"
+
+  ],  ],
+
+  "author": "VetCare Development Team",  "author": "VetCare Development Team",
+
+  "license": "MIT",  "license": "MIT",
+
+  "devDependencies": {  "devDependencies": {
+
+    "concurrently": "^8.2.2"    "concurrently": "^8.2.2"
+
+  },  },
+
+  "dependencies": {  "dependencies": {
+
+    "jsonwebtoken": "^9.0.2"    "jsonwebtoken": "^9.0.2"
+
+  }  }
+
+}}

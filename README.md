@@ -1,203 +1,95 @@
-# VetCare SaaS - Veterinary Practice Management Platform
+# VetCare SaaS
 
-A comprehensive, multi-tenant SaaS solution for veterinary clinics built with modern web technologies.
+A modern, multi-tenant veterinary clinic management platform built with React, Node.js, and SQLite.
 
-## 🏥 Project Overview
+## 🏥 Overview
 
-VetCare SaaS is a complete veterinary practice management system designed to streamline clinic operations, improve patient care, and enhance client communication. The platform supports multiple clinics with role-based access control and comprehensive features for managing appointments, medical records, clients, and pets.
+VetCare is a comprehensive Software-as-a-Service platform designed for veterinary clinics to manage:
+- Patient records and medical history
+- Appointment scheduling
+- Multi-clinic operations
+- HIPAA-compliant data handling
 
-## 🚀 Tech Stack
-
-### Frontend
-- **React 19.1.1** with TypeScript
-- **Material-UI v5** for UI components
-- **Redux Toolkit** for state management
-- **React Router v7** for navigation
-- **Axios** for API communication
-
-### Backend
-- **Node.js** with Express.js
-- **TypeScript** for type safety
-- **MySQL** database with Knex.js ORM
-- **Redis** for caching and sessions
-- **JWT** authentication
-
-## 📋 Features
-
-### ✅ Completed Features
-- 🔐 **Authentication & Authorization** - Multi-role user system with JWT
-- 🏢 **Multi-tenant Architecture** - Support for multiple clinics
-- 📊 **Dashboard** - Comprehensive analytics and quick actions
-- 📅 **Appointment Management** - Scheduling and calendar views
-- 👥 **Client Management** - Client profiles and communication
-- 🐕 **Pet Records** - Complete pet profiles and medical history
-- 📋 **Medical Records** - Digital health records and treatment tracking
-- 📈 **Reports & Analytics** - Business insights and reporting
-- ⚙️ **Settings** - Clinic configuration and user preferences
-
-### 🎨 UI/UX Features
-- 📱 **Responsive Design** - Mobile-first approach
-- 🎨 **Material Design** - Professional medical theme
-- 🌙 **Dark/Light Mode** - User preference themes
-- ♿ **Accessibility** - WCAG compliant interface
-
-## 🏗️ Project Structure
-
-```
-VetCare/
-├── vetcare-saas/
-│   ├── backend/          # Node.js API server
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── models/
-│   │   │   ├── routes/
-│   │   │   ├── middleware/
-│   │   │   └── utils/
-│   │   ├── database/
-│   │   │   ├── migrations/
-│   │   │   └── seeds/
-│   │   └── package.json
-│   └── frontend/         # React application
-│       ├── src/
-│       │   ├── components/
-│       │   ├── pages/
-│       │   ├── services/
-│       │   ├── store/
-│       │   ├── types/
-│       │   └── utils/
-│       └── package.json
-└── Plan.md              # Development roadmap
-```
-
-## 🛠️ Development Setup
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ and npm
-- MySQL 8.0+
-- Redis 6.0+
+- Node.js 18+ 
+- npm or yarn
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd VetCare
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/alexxvives/VetCare.git
+cd VetCare
 
-2. **Backend Setup**
-   ```bash
-   cd vetcare-saas/backend
-   npm install
-   cp .env.example .env
-   # Configure your database and Redis settings in .env
-   npm run migrate
-   npm run seed
-   npm run dev
-   ```
+# Install all dependencies
+npm run install:all
 
-3. **Frontend Setup**
-   ```bash
-   cd vetcare-saas/frontend
-   npm install
-   npm start
-   ```
-
-### Environment Variables
-
-Create `.env` files in both backend and frontend directories:
-
-**Backend (.env)**
-```env
-NODE_ENV=development
-PORT=5000
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_NAME=vetcare_db
-REDIS_URL=redis://localhost:6379
-JWT_SECRET=your_jwt_secret
+# Start development servers
+npm run dev
 ```
 
-**Frontend (.env)**
-```env
-REACT_APP_API_URL=http://localhost:5000/api
+This will start:
+- Backend API on `http://localhost:8000`
+- Frontend on `http://localhost:3000`
+
+## 📁 Project Structure
+
+```
+VetCare/
+├── backend/           # Node.js Express API
+├── frontend/          # React TypeScript SPA
+├── database/          # SQLite schema & migrations
+├── docs/             # Documentation
+├── scripts/          # Build and utility scripts
+└── .github/          # CI/CD and project templates
 ```
 
-## 📱 Application Features
+## 🛠️ Development
 
-### Dashboard
-- Real-time clinic statistics
-- Today's appointments overview
-- Quick action buttons
-- Revenue and patient metrics
+### Available Scripts
 
-### User Roles
-- **Clinic Admin** - Full clinic management access
-- **Veterinarian** - Medical records and appointments
-- **Receptionist** - Appointments and client management
-- **Technician** - Limited medical record access
+- `npm run dev` - Start both frontend and backend
+- `npm run dev:backend` - Start only backend (port 8000)
+- `npm run dev:frontend` - Start only frontend (port 3000)
+- `npm run build` - Build both applications for production
+- `npm test` - Run all tests
+- `npm run migrate` - Run database migrations
+- `npm run seed` - Seed database with sample data
 
-### Security Features
+### Technology Stack
+
+**Frontend:**
+- React 19.1.1 with TypeScript
+- Material-UI v5 for components
+- Redux Toolkit for state management
+- React Router for navigation
+
+**Backend:**
+- Node.js with Express
+- SQLite database with Knex.js
+- JWT authentication
+- CORS enabled for development
+
+## 📚 Documentation
+
+- [Setup Guide](./docs/SETUP.md)
+- [Database Schema](./docs/DATABASE_SCHEMA.md)
+- [API Documentation](./backend/README.md)
+- [Frontend Guide](./frontend/README.md)
+
+## 🔒 Security & Compliance
+
+- HIPAA-compliant data handling
 - JWT-based authentication
-- Role-based access control
-- API rate limiting
-- Data encryption
-
-## 🚧 Development Progress
-
-### Phase 1: Foundation ✅
-- [x] Database schema and models
-- [x] Backend API infrastructure
-- [x] Frontend setup with TypeScript
-- [x] Authentication system
-- [x] Basic routing and layouts
-
-### Phase 2: Core Features ✅
-- [x] Material-UI integration
-- [x] Redux state management
-- [x] Dashboard implementation
-- [x] Responsive design system
-
-### Phase 3: Business Logic 🔄
-- [ ] Appointment scheduling system
-- [ ] Medical records CRUD
-- [ ] Client and pet management
-- [ ] Reporting and analytics
-
-## 🎯 Getting Started
-
-1. **For Developers**: Follow the installation steps above
-2. **For Users**: Access the deployed application at [URL]
-3. **For Clinics**: Contact admin for multi-tenant setup
-
-## 📝 API Documentation
-
-The API follows RESTful conventions:
-
-- `GET /api/appointments` - List appointments
-- `POST /api/appointments` - Create appointment
-- `PUT /api/appointments/:id` - Update appointment
-- `DELETE /api/appointments/:id` - Delete appointment
-
-Full API documentation available at `/api/docs` when running the server.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+- Multi-tenant data isolation
+- Secure API endpoints
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - see [LICENSE](./LICENSE) file for details.
 
-## 🏥 About VetCare
+## 🤝 Contributing
 
-VetCare SaaS is designed to modernize veterinary practice management, making it easier for clinics to provide exceptional pet care while maintaining efficient operations.
-
----
-
-**Built with ❤️ for veterinary professionals**
+Please read our contributing guidelines and code of conduct before submitting pull requests.
