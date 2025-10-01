@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   AppBar,
   Toolbar,
@@ -36,7 +36,8 @@ import {
   ExitToApp,
   LocalHospital,
 } from '@mui/icons-material';
-import { RootState } from '../store/store';
+import { RootState, AppDispatch } from '../store/store';
+import { logoutUser } from '../store/slices/authSlice';
 
 const DRAWER_WIDTH = 280;
 
@@ -51,7 +52,7 @@ const AppLayout: React.FC = () => {
   
   const location = useLocation();
   const navigate = useNavigate();
-  // const dispatch = useDispatch<AppDispatch>(); // TODO: Will be used for logout and clinic switching
+  const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
@@ -119,7 +120,7 @@ const AppLayout: React.FC = () => {
 
   const handleLogout = () => {
     handleUserMenuClose();
-    // dispatch(logout());
+    dispatch(logoutUser());
     navigate('/auth/login');
   };
 

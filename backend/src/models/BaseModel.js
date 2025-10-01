@@ -88,11 +88,15 @@ class BaseModel extends Model {
   static get modifiers() {
     return {
       notDeleted(builder) {
-        builder.whereNull('deleted_at');
+        // Only apply soft delete filter if deleted_at column exists
+        // For MVP, we're not using soft deletes
+        // builder.whereNull('deleted_at');
       },
       
       onlyDeleted(builder) {
-        builder.whereNotNull('deleted_at');
+        // Only apply soft delete filter if deleted_at column exists
+        // For MVP, we're not using soft deletes
+        // builder.whereNotNull('deleted_at');
       }
     };
   }
@@ -133,9 +137,10 @@ class BaseModel extends Model {
     try {
       let query = this.query().findById(id);
       
-      if (!options.includeDeleted) {
-        query = query.modify('notDeleted');
-      }
+      // For MVP, we're not using soft deletes
+      // if (!options.includeDeleted) {
+      //   query = query.modify('notDeleted');
+      // }
       
       return await query;
     } catch (error) {

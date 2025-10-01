@@ -99,7 +99,12 @@ class User extends BaseModel {
    */
   async verifyPassword(password) {
     try {
-      return await bcrypt.compare(password, this.password_hash);
+      console.log('Password verification debug:');
+      console.log('Input password:', password);
+      console.log('Stored hash:', this.password_hash);
+      const result = await bcrypt.compare(password, this.password_hash);
+      console.log('Comparison result:', result);
+      return result;
     } catch (error) {
       console.error('Password verification error:', error);
       return false;
@@ -272,24 +277,59 @@ class User extends BaseModel {
    * Check if user has access to specific clinic
    */
   hasClinicAccess(clinicId) {
-    // Super admin and org admin have access to all clinics
-    if (['super_admin', 'organization_admin'].includes(this.role)) {
+    // Super admin has access to all clinics
+    if (this.isSuperAdmin()) {
+      return true;
+    }
+    
+    // Organization admin has access to all clinics in their org
+    if (this.role === 'organization_admin') {
       return true;
     }
     
     // Check clinic_access array
     const clinicAccess = this.clinic_access || [];
-    return clinicAccess.includes(clinicId);
+    return clinicAccess.includes(clinicId) || clinicAccess.includes('*');
   }
 
   /**
-   * Update last login information
+   * Check if user is super admin
+   */
+  isSuperAdmin() {
+    return this.role === 'super_admin';
+  }
+
+  /**
+   * Check if user is organization admin
+   */
+  isOrganizationAdmin() {
+    return this.role === 'organization_admin';
+  }
+
+  /**
+   * Check if user is clinic admin
+   */
+  isClinicAdmin() {
+    return this.role === 'clinic_admin';
+  }
+
+  /**
+   * Check if user has admin privileges (super, org, or clinic admin)
+   */
+  isAdmin() {
+    return ['super_admin', 'organization_admin', 'clinic_admin'].includes(this.role);
+  }
+
+  /**
+   * Update last login information - disabled for simplified schema
    */
   async updateLastLogin(ipAddress) {
-    return await this.$query().patch({
-      last_login_at: new Date().toISOString(),
-      last_login_ip: ipAddress
-    });
+    // Simplified schema doesn't have login tracking columns
+    // return await this.$query().patch({
+    //   last_login_at: new Date().toISOString(),
+    //   last_login_ip: ipAddress
+    // });
+    return Promise.resolve();
   }
 
   /**
@@ -339,8 +379,7 @@ class User extends BaseModel {
    */
   static async findByEmail(email) {
     return await this.query()
-      .findOne({ email: email.toLowerCase() })
-      .modify('notDeleted');
+      .findOne({ email: email.toLowerCase() });
   }
 
   /**
@@ -372,9 +411,7 @@ class User extends BaseModel {
       return { success: false, error: 'Invalid credentials' };
     }
     
-    if (user.status !== 'active') {
-      return { success: false, error: 'Account is not active' };
-    }
+    // Skip is_active check for MVP simplicity
     
     const isPasswordValid = await user.verifyPassword(password);
     

@@ -1,420 +1,438 @@
 import React from 'react';
-import {
-  Box,
-  Grid,
-  Card,
+import { 
+  Box, 
+  Typography, 
+  Paper, 
+  Avatar, 
+  Card, 
   CardContent,
-  Typography,
-  Avatar,
   Button,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  Grid,
   Chip,
   IconButton,
-  Paper,
-  LinearProgress,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
   Divider,
+  Alert,
+  LinearProgress
 } from '@mui/material';
 import {
   TrendingUp,
   TrendingDown,
-  CalendarToday,
-  Pets,
   People,
+  Pets,
+  CalendarToday,
   AttachMoney,
-  Add,
-  Event,
-  MedicalServices,
-  Phone,
-  Email,
-  AccessTime,
-  CheckCircle,
+  Settings,
+  Security,
+  Analytics,
   Warning,
+  CheckCircle,
+  PersonAdd,
+  Add,
+  Notifications,
+  Assignment,
+  LocalHospital,
+  Schedule,
+  AdminPanelSettings
 } from '@mui/icons-material';
+import { useAppSelector } from '../store/hooks';
 
-/**
- * Dashboard Component
- * Main dashboard showing key metrics, recent activity, and quick actions
- */
 const Dashboard: React.FC = () => {
-  // Mock data - in a real app, this would come from Redux/API
-  const stats = [
-    {
-      title: 'Today\'s Appointments',
-      value: '12',
-      change: '+8%',
-      trend: 'up',
-      icon: <CalendarToday />,
-      color: 'primary.main',
-    },
-    {
-      title: 'Active Patients',
-      value: '248',
-      change: '+12%',
-      trend: 'up',
-      icon: <Pets />,
-      color: 'success.main',
-    },
-    {
-      title: 'New Clients',
-      value: '34',
-      change: '+15%',
-      trend: 'up',
-      icon: <People />,
-      color: 'info.main',
-    },
-    {
-      title: 'Monthly Revenue',
-      value: '$24,580',
-      change: '-3%',
-      trend: 'down',
-      icon: <AttachMoney />,
-      color: 'warning.main',
-    },
-  ];
+  const { user } = useAppSelector((state) => state.auth);
+  
+  const userName = user ? `${user.first_name} ${user.last_name}` : 'User';
+  const userRole = user?.role || 'client';
+  const userInitials = user ? `${user.first_name.charAt(0)}${user.last_name.charAt(0)}` : 'U';
 
-  const recentAppointments = [
-    {
-      id: 1,
-      petName: 'Buddy',
-      ownerName: 'John Smith',
-      time: '09:00 AM',
-      type: 'Check-up',
-      status: 'confirmed',
-      phone: '(555) 123-4567',
-    },
-    {
-      id: 2,
-      petName: 'Luna',
-      ownerName: 'Sarah Davis',
-      time: '10:30 AM',
-      type: 'Vaccination',
-      status: 'confirmed',
-      phone: '(555) 987-6543',
-    },
-    {
-      id: 3,
-      petName: 'Max',
-      ownerName: 'Mike Johnson',
-      time: '02:00 PM',
-      type: 'Surgery',
-      status: 'pending',
-      phone: '(555) 456-7890',
-    },
-    {
-      id: 4,
-      petName: 'Bella',
-      ownerName: 'Emily Wilson',
-      time: '03:30 PM',
-      type: 'Emergency',
-      status: 'urgent',
-      phone: '(555) 234-5678',
-    },
-  ];
+  // MVP Super Admin Dashboard Content
+  if (userRole === 'super_admin') {
+    return (
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        {/* Super Admin Header */}
+        <Paper 
+          sx={{ 
+            mb: 4, 
+            p: 3, 
+            background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+            color: 'white',
+            borderRadius: 2
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Avatar
+                sx={{
+                  width: 64,
+                  height: 64,
+                  mr: 3,
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  fontSize: '1.5rem',
+                }}
+              >
+                👑
+              </Avatar>
+              <Box>
+                <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                  Super Admin Control Panel
+                </Typography>
+                <Typography variant="body1" sx={{ opacity: 0.9 }}>
+                  VetCare Animal Hospital • Complete System Access
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <IconButton sx={{ color: 'white', bgcolor: 'rgba(255,255,255,0.1)' }}>
+                <Notifications />
+              </IconButton>
+              <IconButton sx={{ color: 'white', bgcolor: 'rgba(255,255,255,0.1)' }}>
+                <Settings />
+              </IconButton>
+            </Box>
+          </Box>
+        </Paper>
 
-  const quickActions = [
-    {
-      title: 'New Appointment',
-      description: 'Schedule a new appointment',
-      icon: <Event />,
-      action: () => console.log('New appointment'),
-      color: 'primary',
-    },
-    {
-      title: 'Add Client',
-      description: 'Register a new client',
-      icon: <People />,
-      action: () => console.log('Add client'),
-      color: 'secondary',
-    },
-    {
-      title: 'Medical Record',
-      description: 'Create medical record',
-      icon: <MedicalServices />,
-      action: () => console.log('Medical record'),
-      color: 'success',
-    },
-  ];
+        {/* System Health Alert */}
+        <Alert severity="success" sx={{ mb: 3 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            🟢 All Systems Operational
+          </Typography>
+          System health: Excellent • Database: Connected • Last backup: 2 hours ago
+        </Alert>
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'confirmed':
-        return 'success';
-      case 'pending':
-        return 'warning';
-      case 'urgent':
-        return 'error';
-      default:
-        return 'default';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'confirmed':
-        return <CheckCircle fontSize="small" />;
-      case 'pending':
-        return <AccessTime fontSize="small" />;
-      case 'urgent':
-        return <Warning fontSize="small" />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      {/* Welcome Section */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
-          Welcome back, Dr. Smith! 👋
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Here's what's happening at your clinic today.
-        </Typography>
-      </Box>
-
-      {/* Statistics Cards */}
-      <Box 
-        sx={{ 
-          display: 'grid',
-          gridTemplateColumns: { 
-            xs: '1fr', 
-            sm: 'repeat(2, 1fr)', 
-            md: 'repeat(4, 1fr)' 
-          },
+        {/* Key Metrics */}
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
           gap: 3,
           mb: 4
-        }}
-      >
-        {stats.map((stat, index) => (
-          <Card
-            key={index}
-            sx={{
-              height: '100%',
-              transition: 'transform 0.2s',
-              '&:hover': { transform: 'translateY(-4px)' },
-            }}
-          >
+        }}>
+          <Card sx={{ textAlign: 'center', p: 2 }}>
             <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar
-                  sx={{
-                    bgcolor: stat.color,
-                    width: 48,
-                    height: 48,
-                    mr: 2,
-                  }}
-                >
-                  {stat.icon}
-                </Avatar>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="h4" component="div" sx={{ fontWeight: 700 }}>
-                    {stat.value}
-                  </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {stat.trend === 'up' ? (
-                      <TrendingUp sx={{ color: 'success.main', mr: 0.5, fontSize: 16 }} />
-                    ) : (
-                      <TrendingDown sx={{ color: 'error.main', mr: 0.5, fontSize: 16 }} />
-                    )}
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: stat.trend === 'up' ? 'success.main' : 'error.main',
-                        fontWeight: 600,
-                      }}
-                    >
-                      {stat.change}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <Typography variant="body2" color="text.secondary">
-                {stat.title}
+              <Avatar sx={{ bgcolor: 'primary.main', width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                <People />
+              </Avatar>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                327
               </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Total Users
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <TrendingUp sx={{ color: 'success.main', mr: 0.5, fontSize: 18 }} />
+                <Typography variant="caption" sx={{ color: 'success.main' }}>
+                  +15 this month
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
-        ))}
-      </Box>
 
-      <Box 
-        sx={{ 
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' },
-          gap: 3
-        }}
-      >
-        {/* Recent Appointments */}
-        <Card sx={{ height: '100%' }}>
-          <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'between', alignItems: 'center', mb: 3 }}>
-                <Typography variant="h6" component="h2" sx={{ fontWeight: 600 }}>
-                  Today's Appointments
+          <Card sx={{ textAlign: 'center', p: 2 }}>
+            <CardContent>
+              <Avatar sx={{ bgcolor: 'success.main', width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                <Pets />
+              </Avatar>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                1,248
+              </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Registered Pets
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <TrendingUp sx={{ color: 'success.main', mr: 0.5, fontSize: 18 }} />
+                <Typography variant="caption" sx={{ color: 'success.main' }}>
+                  +47 this week
                 </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={<Add />}
-                  onClick={() => console.log('Add appointment')}
-                >
-                  Add New
-                </Button>
-              </Box>
-
-              <List sx={{ p: 0 }}>
-                {recentAppointments.map((appointment, index) => (
-                  <React.Fragment key={appointment.id}>
-                    <ListItem
-                      sx={{
-                        px: 0,
-                        '&:hover': { bgcolor: 'action.hover' },
-                        borderRadius: 1,
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar
-                          sx={{
-                            bgcolor: 'primary.main',
-                            width: 48,
-                            height: 48,
-                          }}
-                        >
-                          <Pets />
-                        </Avatar>
-                      </ListItemAvatar>
-                      
-                      <ListItemText
-                        primary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                              {appointment.petName}
-                            </Typography>
-                            <Chip
-                              icon={getStatusIcon(appointment.status)}
-                              label={appointment.status}
-                              size="small"
-                              color={getStatusColor(appointment.status) as any}
-                              variant="outlined"
-                            />
-                          </Box>
-                        }
-                        secondary={
-                          <Box>
-                            <Typography variant="body2" color="text.secondary">
-                              Owner: {appointment.ownerName}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Type: {appointment.type} • Time: {appointment.time}
-                            </Typography>
-                          </Box>
-                        }
-                      />
-                      
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <IconButton size="small" color="primary">
-                          <Phone fontSize="small" />
-                        </IconButton>
-                        <IconButton size="small" color="primary">
-                          <Email fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    </ListItem>
-                    {index < recentAppointments.length - 1 && <Divider />}
-                  </React.Fragment>
-                ))}
-              </List>
-
-              <Box sx={{ mt: 2, textAlign: 'center' }}>
-                <Button variant="text" color="primary">
-                  View All Appointments
-                </Button>
               </Box>
             </CardContent>
-        </Card>
+          </Card>
 
-        {/* Quick Actions */}
-        <Card sx={{ height: '100%' }}>
-          <CardContent>
-              <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600 }}>
-                Quick Actions
+          <Card sx={{ textAlign: 'center', p: 2 }}>
+            <CardContent>
+              <Avatar sx={{ bgcolor: 'info.main', width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                <CalendarToday />
+              </Avatar>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                28
+              </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Today's Appointments
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="caption" color="text.secondary">
+                  12 completed • 16 pending
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+
+          <Card sx={{ textAlign: 'center', p: 2 }}>
+            <CardContent>
+              <Avatar sx={{ bgcolor: 'warning.main', width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                <AttachMoney />
+              </Avatar>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                $18.4K
+              </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Monthly Revenue
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <TrendingUp sx={{ color: 'success.main', mr: 0.5, fontSize: 18 }} />
+                <Typography variant="caption" sx={{ color: 'success.main' }}>
+                  +8% vs last month
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+
+        {/* Main Dashboard Content */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 3 }}>
+          
+          {/* Admin Quick Actions */}
+          <Card>
+            <CardContent>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center' }}>
+                <AdminPanelSettings sx={{ mr: 1 }} />
+                Admin Actions
               </Typography>
               
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {quickActions.map((action, index) => (
-                  <Paper
-                    key={index}
-                    elevation={1}
-                    sx={{
-                      p: 2,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      '&:hover': {
-                        elevation: 3,
-                        transform: 'translateY(-2px)',
-                      },
-                    }}
-                    onClick={action.action}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Avatar
-                        sx={{
-                          bgcolor: `${action.color}.main`,
-                          mr: 2,
-                          width: 40,
-                          height: 40,
-                        }}
-                      >
-                        {action.icon}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                          {action.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {action.description}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Paper>
-                ))}
-              </Box>
-
-              {/* Activity Summary */}
-              <Box sx={{ mt: 3 }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
-                  Today's Progress
-                </Typography>
-                
-                <Box sx={{ mb: 2 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'between', mb: 1 }}>
-                    <Typography variant="body2">Appointments</Typography>
-                    <Typography variant="body2">8/12</Typography>
+              <Box sx={{ display: 'grid', gap: 2 }}>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<PersonAdd />}
+                  sx={{ justifyContent: 'flex-start', p: 2 }}
+                >
+                  <Box sx={{ textAlign: 'left' }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      Manage Users
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Add staff, manage permissions
+                    </Typography>
                   </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={(8 / 12) * 100}
-                    sx={{ height: 8, borderRadius: 4 }}
-                  />
-                </Box>
+                </Button>
 
-                <Box sx={{ mb: 2 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'between', mb: 1 }}>
-                    <Typography variant="body2">Revenue Goal</Typography>
-                    <Typography variant="body2">$850/$1200</Typography>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Analytics />}
+                  sx={{ justifyContent: 'flex-start', p: 2 }}
+                >
+                  <Box sx={{ textAlign: 'left' }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      View Reports
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Financial & performance analytics
+                    </Typography>
                   </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={(850 / 1200) * 100}
-                    color="success"
-                    sx={{ height: 8, borderRadius: 4 }}
-                  />
-                </Box>
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Settings />}
+                  sx={{ justifyContent: 'flex-start', p: 2 }}
+                >
+                  <Box sx={{ textAlign: 'left' }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      Clinic Settings
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      Hours, services, general config
+                    </Typography>
+                  </Box>
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<Security />}
+                  sx={{ justifyContent: 'flex-start', p: 2 }}
+                >
+                  <Box sx={{ textAlign: 'left' }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      Security & Backup
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      System security & data management
+                    </Typography>
+                  </Box>
+                </Button>
               </Box>
             </CardContent>
           </Card>
+
+          {/* System Status & Activity */}
+          <Card>
+            <CardContent>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center' }}>
+                <Assignment sx={{ mr: 1 }} />
+                System Status
+              </Typography>
+
+              {/* System Health */}
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" gutterBottom>
+                  Database Performance
+                </Typography>
+                <LinearProgress 
+                  variant="determinate" 
+                  value={92} 
+                  color="success"
+                  sx={{ height: 8, borderRadius: 4, mb: 1 }} 
+                />
+                <Typography variant="caption" color="text.secondary">
+                  92% - Excellent
+                </Typography>
+              </Box>
+
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" gutterBottom>
+                  Storage Usage
+                </Typography>
+                <LinearProgress 
+                  variant="determinate" 
+                  value={67} 
+                  color="info"
+                  sx={{ height: 8, borderRadius: 4, mb: 1 }} 
+                />
+                <Typography variant="caption" color="text.secondary">
+                  67% - 3.2GB of 5GB used
+                </Typography>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Recent Activity */}
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                Recent Activity
+              </Typography>
+              
+              <List sx={{ p: 0 }}>
+                <ListItem sx={{ px: 0, py: 1 }}>
+                  <ListItemIcon>
+                    <CheckCircle color="success" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="New user registered"
+                    secondary="Dr. Sarah Johnson joined as veterinarian"
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    2h ago
+                  </Typography>
+                </ListItem>
+
+                <ListItem sx={{ px: 0, py: 1 }}>
+                  <ListItemIcon>
+                    <Schedule color="info" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="System backup completed"
+                    secondary="All data successfully backed up"
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    3h ago
+                  </Typography>
+                </ListItem>
+
+                <ListItem sx={{ px: 0, py: 1 }}>
+                  <ListItemIcon>
+                    <Warning color="warning" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="High appointment volume"
+                    secondary="Today's bookings 40% above average"
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    5h ago
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
+    );
+  }
+
+  // Default dashboard for other roles
+  return (
+    <Box sx={{ flexGrow: 1, p: 3 }}>
+      <Paper 
+        sx={{ 
+          mb: 4, 
+          p: 3, 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          borderRadius: 2
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar
+            sx={{
+              width: 64,
+              height: 64,
+              mr: 3,
+              bgcolor: 'rgba(255, 255, 255, 0.2)',
+              fontSize: '1.5rem',
+            }}
+          >
+            {userInitials}
+          </Avatar>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+              Welcome back, {userName}! 👋
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.9 }}>
+              Role: {userRole} • {new Date().toLocaleDateString()}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+        gap: 3 
+      }}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Dashboard Overview
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Your personalized dashboard is ready! Role: {userRole}
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Quick Actions
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Role-based actions for {userRole} users.
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Recent Activity
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Your recent activities will appear here.
+            </Typography>
+          </CardContent>
+        </Card>
       </Box>
     </Box>
   );

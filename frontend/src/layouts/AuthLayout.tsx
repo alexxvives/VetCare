@@ -21,7 +21,7 @@ const AuthLayout: React.FC = () => {
         padding: 3,
       }}
     >
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Header */}
         <Box
           sx={{
@@ -69,17 +69,21 @@ const AuthLayout: React.FC = () => {
         </Box>
 
         {/* Main Content */}
-        <Paper
-          elevation={8}
-          sx={{
-            p: 4,
-            borderRadius: 3,
-            background: 'rgba(255,255,255,0.95)',
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          <Outlet />
-        </Paper>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Paper
+            elevation={8}
+            sx={{
+              p: 4,
+              borderRadius: 3,
+              background: 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(10px)',
+              width: '100%',
+              maxWidth: 450,
+            }}
+          >
+            <Outlet />
+          </Paper>
+        </Box>
 
         {/* Footer */}
         <Box
